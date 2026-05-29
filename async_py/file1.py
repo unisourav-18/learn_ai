@@ -1,15 +1,19 @@
-import google.generativeai as genai
+import os
+from dotenv import load_dotenv
+from google import genai
 
-# Configure Gemini API
-genai.configure(api_key="AIzaSyAacRd-K0flnQmTKI5i2S632dEJktAZxH0")
+load_dotenv()
 
-# Load model
-model = genai.GenerativeModel("gemini-3.5-flash")
-
-# Generate response
-response = model.generate_content(
-    "National Animal of India?"
+# create client
+client = genai.Client(
+    api_key=os.getenv("GEMINI_API_KEY")
 )
 
-# Print output
+# generate text
+response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents="National Animal of India?"
+)
+
+# print output
 print(response.text)
