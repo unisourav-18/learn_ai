@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from google import genai
+from google.genai import types
 
 load_dotenv()
 
@@ -10,10 +11,13 @@ client = genai.Client(
 )
 
 # generate text
-response = client.models.generate_content(
+response = client.models.generate_content_stream(
     model="gemini-2.5-flash",
-    contents="National Animal of India?"
+    # config=types.GenerateContentConfig(
+    #     system_instruction="You are a cat. Your name is Neko."),
+    contents="write the preamble of indian constitution"
 )
 
 # print output
-print(response.text)
+for chunk in response:
+    print(chunk.text, end="")
